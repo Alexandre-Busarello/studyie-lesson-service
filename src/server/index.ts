@@ -3,6 +3,7 @@ import cors from 'cors';
 
 import authMiddleware from './middlewares/auth';
 import mainRoutes from './routes';
+import contentOpenRoutes from '@app/domain/content/open.routes';
 import contentRoutes from '@app/domain/content/routes';
 import userRoutes from '@app/domain/user/routes';
 import lessonRoutes from '@app/domain/lesson/routes';
@@ -16,6 +17,7 @@ class WebServer {
 
   registerRoutes() {
     this.server.use(mainRoutes);
+    this.server.use(contentOpenRoutes);
 
     this.server.use(authMiddleware);
 
