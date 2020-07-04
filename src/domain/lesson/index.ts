@@ -6,6 +6,10 @@ export class LessonModel {
     return await Lesson.create(lesson);
   }
 
+  public static async update(id: string, lesson: LessonDto): Promise<LessonDto> {
+    return await Lesson.findByIdAndUpdate(id, lesson, { new: true });
+  }
+
   public static async getAll(): Promise<LessonDto> {
     return await Lesson.find();
   }
