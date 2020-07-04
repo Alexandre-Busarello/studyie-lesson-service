@@ -16,6 +16,9 @@ class WebServer {
 
   registerRoutes() {
     this.server.use(mainRoutes);
+
+    this.server.use(authMiddleware);
+
     this.server.use(contentRoutes);
     this.server.use(userRoutes);
     this.server.use(lessonRoutes);
@@ -25,8 +28,6 @@ class WebServer {
     this.server.use(cors());
     this.server.use(express.json());
     this.server.use(express.urlencoded({ extended: true }));
-
-    this.server.use(authMiddleware);
 
     this.registerRoutes();
 
