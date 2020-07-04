@@ -1,5 +1,7 @@
 import { Lesson } from '@app/database/schema';
 import { LessonDto } from '@app/domain/lesson/types';
+import { PreferenceVo } from '@app/domain/user/types';
+import { getUniqueArray } from '@app/helpers'
 
 export class LessonModel {
   public static async create(lesson: LessonDto): Promise<LessonDto> {
@@ -11,7 +13,43 @@ export class LessonModel {
   }
 
   public static async getAll(): Promise<LessonDto> {
-    return await Lesson.find();
+    return await Lesson.find().sort('-createdAt');
+  }
+
+  public static async getLessonsByPreferences(preferences: Array<PreferenceVo>): Promise<LessonDto> {
+    const prefOrderByPriority = preferences.sort(
+      (preferenceA, preferenceB) => preferenceA?.priority - preferenceB?.priority
+    );
+    const allPrefFilter = prefOrderByPriority.map(preference => {
+      return { "contentsType.name": preference.preferenceName }
+    });
+    if (allPrefFilter.length === 0) {
+      return await LessonModel.getAll();
+    }
+    const lessonArray = await Promise.all(allPrefFilter.map(async pref => {
+      const lessonFilter = {
+        $or: [pref]
+      };
+
+      return await Lesson.find(lessonFilter);
+    }));
+
+    let orderedLessons = lessonArray[0];
+    const ready = await lessonArray.forEach(async (lessons, index) => {
+      if (index !== 0) {
+        orderedLessons = orderedLessons?.concat(lessons);
+      }
+    });
+
+    return getUniqueArray(orderedLessons, '_id');
+  }
+
+  public static async getLessonsByUser(externalId: string): Promise<LessonDto> {
+    return await Lesson.find({ tutorExternalId: externalId })
+  }
+
+  public static async getLessonById(id: string): Promise<LessonDto> {
+    return await Lesson.findById(id);
   }
 
   public static validateData(lesson: LessonDto): string {

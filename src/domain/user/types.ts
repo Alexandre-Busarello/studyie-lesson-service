@@ -1,6 +1,6 @@
 export interface PreferenceVo {
   preferenceName: string,
-  priotity: number
+  priority: number
 }
 
 export interface UserPreferenceDto {
