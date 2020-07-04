@@ -1,8 +1,11 @@
 import express, { Application } from 'express';
-// const mongoose = require("mongoose");
 import cors from 'cors';
 
-import routes from './routes';
+import authMiddleware from './middlewares/auth';
+import mainRoutes from './routes';
+import contentRoutes from '@app/domain/content/routes';
+import userRoutes from '@app/domain/user/routes';
+import lessonRoutes from '@app/domain/lesson/routes';
 
 class WebServer {
   server: Application;
@@ -11,17 +14,27 @@ class WebServer {
     this.server = express();
   }
 
+  registerRoutes() {
+    this.server.use(mainRoutes);
+    this.server.use(contentRoutes);
+    this.server.use(userRoutes);
+    this.server.use(lessonRoutes);
+  }
+
   setup() {
     this.server.use(cors());
     this.server.use(express.json());
     this.server.use(express.urlencoded({ extended: true }));
-    this.server.use(routes);
+
+    this.server.use(authMiddleware);
+
+    this.registerRoutes();
 
     return this;
   }
 
   listen() {
-    const port = process.env.PORT || '3000';
+    const port = process.env.PORT || '5000';
     this.server.listen(port, () => console.info(`Server ready and listening on port ${port}`));
 
     return this;

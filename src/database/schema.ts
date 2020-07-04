@@ -8,6 +8,33 @@ import mongoose from"mongoose";
 
 const LessonSchema = new mongoose.Schema({
   name: String,
+  thumbUrl: String,
+  videoUrl: String,
+  description: String,
+  contentsType: [{
+    name: { type: String, trim: true }
+  }],
+  tutorExternalId: String,
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+const ContentTypeSchema = new mongoose.Schema({
+  name: { type: String, trim: true },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+const UserPreferenceSchema = new mongoose.Schema({
+  externalId: String,
+  preferences: [{
+    preferenceName: { type: String, trim: true },
+    priority: { type: Number }
+  }],
   createdAt: {
     type: Date,
     default: Date.now
@@ -35,4 +62,6 @@ const LessonSchema = new mongoose.Schema({
 //   }
 // });
 
-module.exports = mongoose.model("Post", PostSchema);
+export const Lesson = mongoose.model("Lesson", LessonSchema);
+export const ContentType = mongoose.model("ContentType", ContentTypeSchema);
+export const UserPreference = mongoose.model("UserPreference", UserPreferenceSchema);

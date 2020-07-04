@@ -13,6 +13,8 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
     "mongoose": "^5.7.5"
   },
   "devDependencies": {
@@ -30,12 +32,10 @@
     "prettier": "^2.0.5",
     "ts-jest": "^26.1.0",
     "ts-node": "^8.10.2",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^3.9.5"
   },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --fix",
-      "git add"
-    ]
+  "_moduleAliases": {
+    "@app": "./build"
   }
 }
