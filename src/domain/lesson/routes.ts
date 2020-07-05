@@ -20,6 +20,10 @@ routes.post('/lesson', async (req: any, res: any) => {
   return res.json(await LessonModel.create(lesson));
 });
 
+routes.put('/lesson/:id', async (req: any, res: any) => {
+  return res.json(await LessonModel.update(req.params.id, req.body));
+});
+
 routes.get('/lesson/:id', async (req: any, res: any) => {
   return res.json(await LessonModel.getLessonById(req.params.id));
 });
