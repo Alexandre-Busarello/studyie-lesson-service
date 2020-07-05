@@ -5,6 +5,10 @@ import { UserPreferenceDto } from '@app/domain/user/types';
 
 const routes = Router();
 
+routes.get('/student/preferences', async (req: any, res: any) => {
+  return res.json(await UserPreferenceModel.getUserPreferenceById(req.userId));
+});
+
 routes.get('/user/preferences', async (req: any, res: any) => {
   return res.json(await UserPreferenceModel.getAll());
 });

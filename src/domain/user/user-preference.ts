@@ -12,6 +12,10 @@ export class UserPreferenceModel {
     return await UserPreference.find();
   }
 
+  public static async getUserPreferenceById(externalId: string): Promise<UserPreferenceDto> {
+    return await UserPreference.find({ externalId });
+  }
+
   public static validateData(userPreference: PreferenceVo): string {
     if (!userPreference.preferenceName) {
       return 'The preference name is required';
