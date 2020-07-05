@@ -19,7 +19,8 @@ export class LessonModel {
   public static async getByQuery(q: string): Promise<LessonDto> {
     return await Lesson.find({ $or: [
       { name: { $regex: '.*' + q + '.*' } },
-      { description: { $regex: '.*' + q + '.*' } }
+      { description: { $regex: '.*' + q + '.*' } },
+      { 'contentsType.name': { $regex: '.*' + q + '.*' } }
     ]}).sort('-createdAt');
   }
 
