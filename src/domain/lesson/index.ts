@@ -16,6 +16,13 @@ export class LessonModel {
     return await Lesson.find().sort('-createdAt');
   }
 
+  public static async getByQuery(q: string): Promise<LessonDto> {
+    return await Lesson.find({ $or: [
+      { name: { $regex: '.*' + q + '.*' } },
+      { description: { $regex: '.*' + q + '.*' } }
+    ]}).sort('-createdAt');
+  }
+
   public static async getLessonsByPreferences(preferences: Array<PreferenceVo>): Promise<LessonDto> {
     const prefOrderByPriority = preferences.sort(
       (preferenceA, preferenceB) => preferenceA?.priority - preferenceB?.priority

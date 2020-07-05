@@ -5,6 +5,9 @@ import { LessonDto } from '@app/domain/lesson/types';
 const routes = Router();
 
 routes.get('/lesson', async (req: any, res: any) => {
+  if (req.query?.q) {
+    return res.json(await LessonModel.getByQuery(req.query.q));
+  }
   return res.json(await LessonModel.getAll());
 });
 
