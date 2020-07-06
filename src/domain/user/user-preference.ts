@@ -13,7 +13,7 @@ export class UserPreferenceModel {
   }
 
   public static async getUserPreferenceById(externalId: string): Promise<UserPreferenceDto> {
-    return await UserPreference.find({ externalId });
+    return await UserPreference.findOne({ externalId });
   }
 
   public static validateData(userPreference: PreferenceVo): string {
